@@ -9,5 +9,6 @@ To use this as a project starting point:
    * .devcontainer/devcontianer.json name
    * .vscode/launch.json cargo --bin arg
    * .vscode/launch.json cargo --package arg
+1. Install the Dev Containers extension in VS Code: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 
-After these changes, you should be able to run the Dev Containers "Reopen in Container" command in Visual Studio Code.
+After these changes, you should be able to run the Dev Containers "Reopen in Container" command to start and connect to the Dev Container in Code.
