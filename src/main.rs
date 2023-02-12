@@ -1,56 +1,60 @@
-// https://doc.rust-lang.org/book/ch05-02-example-structs.html
+use std::env;
+#[macro_use]
+extern crate log;
 
-// fn main() {
-//     let width1 = 30;
-//     let height1 = 50;
-
-//     println!(
-//         "The area of the rectangle is {} square pixels.",
-//         area(width1, height1)
-//     );
-// }
-
-// fn area(width: u32, height: u32) -> u32 {
-//     width * height
-// }
-
-// Refactoring with Tuples
-// (not ideal tbh)
-
-// fn main () {
-//     let rect1 = (30, 50);
-
-//     println!(
-//         "The area of the rectangle is {} square pixels.",
-//         area(rect1)
-//     );
-// }
-
-// fn area(dimensions: (u32, u32)) -> u32 {
-//     dimensions.0 * dimensions.1
-// }
-
-// Refactoring with Structs: Adding More Meaning
-
-struct Rectangle {
-    width: u32,
-    height: u32,
-}
+mod tcp_client;
+mod tcp_server;
 
 fn main() {
-    let rect1 = Rectangle {
-        width: 30,
-        height: 50,
-    };
+    env::set_var("RUST_LOG", "debug");
+    env_logger::init();
+    let args: Vec<String> = env::args().collect();
 
-    println!(
-        "The area of the rectangle is {} square pixels.",
-        area(&rect1)
-    );
+    if args.len() != 4 {
+        error!("");
+        std::process::exit(1);
+    }
+
+    let protocol: &str = &args[1];
+    let role: &str = &args[2];
+    let address: &str = &args[3];
+
+    match protocol {
+        "tcp" => match role {
+            "server" => {
+                // TODO:TCPサーバの呼び出し
+                tcp_server::serve(address).unwrap_or_else(|e|error!("{}",e));
+
+            }
+            "client" => {
+                // TODO:TCPクライアントの呼び出し
+            }
+            _ => {
+                missing_role();
+            }
+        },
+        "udp" => match role {
+            "server" => {
+                // TODO:TCPサーバの呼び出し
+            }
+            "client" => {
+                // TODO:TCPクライアントの呼び出し
+            }
+            _ => {
+                missing_role();
+            }
+        },
+        _ => {
+            error!("");
+            std::process::exit(1);
+        }
+    }
 }
 
-fn area(rectangle: &Rectangle) -> u32 {
-    rectangle.width * rectangle.height
+/**
+ * 第２引数が不正な時にエラーを出す関数
+ */
+fn missing_role() {
+    error!("");
+    std::process::exit(1);
 }
-
-// Left off @ https://doc.rust-lang.org/book/ch05-02-example-structs.html#adding-useful-functionality-with-derived-traits
